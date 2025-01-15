@@ -1,9 +1,5 @@
-package com.myjoyy.composetutorial
+package com.myjoyy.composetutorial2.screens
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,42 +16,107 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.myjoyy.composetutorial.ui.theme.ComposeTutorialTheme
+import com.myjoyy.composetutorial2.ui.theme.ComposeTutorial2Theme
 import androidx.compose.foundation.border
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.savedinstancestate.rememberSavedInstanceState
 import androidx.compose.runtime.setValue
-import androidx.compose.material3.Scaffold
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.style.TextOverflow
+
+import com.myjoyy.composetutorial2.R
+
+import com.myjoyy.composetutorial2.screens.Message
 
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            ComposeTutorialTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Conversation(messages = SampleData.conversationSample,
-                        modifier = Modifier.padding(innerPadding))
-                }
-            }
-        }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HwTwoScreen(
+    modifier: Modifier = Modifier,
+    onBackButton: () -> Unit,
+    onNavigateToSettings: () -> Unit
+){
+    //val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    //https://developer.android.com/develop/ui/compose/components/app-bars
+    //https://developer.android.com/develop/ui/compose/libraries
+
+    //back button handling since fast clicking pops too many items from stack
+
+
+    Scaffold(
+
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        "Homework 2",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                            onBackButton()
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Localized description"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { onNavigateToSettings() }) {
+                        Icon(
+                            imageVector = Icons.Filled.Settings,
+                            contentDescription = "Localized description"
+                        )
+                    }
+                },
+            )
+        },
+    ) { innerPadding ->
+        Conversation2(
+            messages = SampleData.conversationSample,
+            modifier = Modifier.padding(innerPadding)
+        )
     }
-    data class Message(val author: String, val body: String)
 }
 
+
+
 @Composable
-fun MessageCard(msg: MainActivity.Message) {
+fun MessageCard2(msg: Message) {
     Row(modifier = Modifier.padding(all = 8.dp)) {
         Image(
             painter = painterResource(R.drawable.profile_picture),
@@ -79,7 +140,7 @@ fun MessageCard(msg: MainActivity.Message) {
         Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
             Text(
                 //text = msg.author,
-                text = "Janne", //
+                text = "Janne2", //
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.titleSmall
             )
@@ -109,10 +170,10 @@ fun MessageCard(msg: MainActivity.Message) {
 }
 
 @Composable
-fun Conversation(messages: List<MainActivity.Message>, modifier: Modifier = Modifier) {
+fun Conversation2(messages: List<Message>, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
         items(messages) { message ->
-            MessageCard(message)
+            MessageCard2(message)
         }
     }
 }
@@ -124,8 +185,8 @@ fun Conversation(messages: List<MainActivity.Message>, modifier: Modifier = Modi
     name = "Dark Mode"
 )
 @Composable
-fun PreviewConversation() {
-    ComposeTutorialTheme {
+fun PreviewConversation2() {
+    ComposeTutorial2Theme {
         Conversation(SampleData.conversationSample)
     }
 }

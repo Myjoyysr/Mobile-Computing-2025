@@ -1,9 +1,5 @@
-package com.myjoyy.composetutorial
+package com.myjoyy.composetutorial2.screens
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,7 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.myjoyy.composetutorial.ui.theme.ComposeTutorialTheme
+import com.myjoyy.composetutorial2.ui.theme.ComposeTutorial2Theme
 import androidx.compose.foundation.border
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -30,32 +26,29 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.savedinstancestate.rememberSavedInstanceState
 import androidx.compose.runtime.setValue
-import androidx.compose.material3.Scaffold
+
+import com.myjoyy.composetutorial2.R
+
+data class Message(val author: String, val body: String)
 
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            ComposeTutorialTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Conversation(messages = SampleData.conversationSample,
-                        modifier = Modifier.padding(innerPadding))
-                }
-            }
-        }
-    }
-    data class Message(val author: String, val body: String)
+@Composable
+fun HwOneScreen(
+    modifier: Modifier = Modifier
+){
+    Conversation(
+        messages = SampleData.conversationSample,
+        modifier = modifier
+        )
 }
 
 @Composable
-fun MessageCard(msg: MainActivity.Message) {
+fun MessageCard(msg: Message) {
     Row(modifier = Modifier.padding(all = 8.dp)) {
         Image(
             painter = painterResource(R.drawable.profile_picture),
@@ -79,7 +72,7 @@ fun MessageCard(msg: MainActivity.Message) {
         Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
             Text(
                 //text = msg.author,
-                text = "Janne", //
+                text = "Janne1", //
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.titleSmall
             )
@@ -109,7 +102,7 @@ fun MessageCard(msg: MainActivity.Message) {
 }
 
 @Composable
-fun Conversation(messages: List<MainActivity.Message>, modifier: Modifier = Modifier) {
+fun Conversation(messages: List<Message>, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
         items(messages) { message ->
             MessageCard(message)
@@ -125,7 +118,7 @@ fun Conversation(messages: List<MainActivity.Message>, modifier: Modifier = Modi
 )
 @Composable
 fun PreviewConversation() {
-    ComposeTutorialTheme {
+    ComposeTutorial2Theme {
         Conversation(SampleData.conversationSample)
     }
 }
