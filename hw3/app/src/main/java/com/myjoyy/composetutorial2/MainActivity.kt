@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
 
         val userDao = db.userDao()
 
-        val userCheck = userDao.getUser()
+        val userCheck = userDao.getUserOne()
 
         if (userCheck == null){
             val newUser = User(uid = 1, username = "test", imagePath = "")
@@ -100,7 +100,6 @@ fun TutorialNavigation(
                 onNavigateToHwTwo = { navController.navigate(route = HwTwo) },
                 onNavigateToHwThree = { navController.navigate(route = HwThree) }
 
-                /*...*/
             )
         }
         composable<HwOne> {
