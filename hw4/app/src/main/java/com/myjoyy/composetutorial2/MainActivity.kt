@@ -1,5 +1,7 @@
 package com.myjoyy.composetutorial2
 
+import android.content.Intent
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -83,8 +85,11 @@ class MainActivity : ComponentActivity() {
         val notificationHelper = NotificationHelper(this)
         notificationHelper.notificationChannel()
 
-        var sensorHelper = SensorHelper(this, notificationHelper = notificationHelper)
-        sensorHelper.startSensorListener()
+        //var sensorHelper = SensorHelper()
+        //sensorHelper.startSensorListener()
+
+        val sensorIntent = Intent(this, SensorHelper::class.java)
+        startForegroundService(sensorIntent)
 
         setContent {
             ComposeTutorial2Theme {
