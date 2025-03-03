@@ -1,13 +1,12 @@
 package com.myjoyy.composetutorial2.screens
 
-
+import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,16 +15,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.Icon
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -33,27 +31,28 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-
 import coil3.compose.rememberAsyncImagePainter
 import com.myjoyy.composetutorial2.R
 import com.myjoyy.composetutorial2.db.User
 import com.myjoyy.composetutorial2.notifications.NotificationHelper
+import com.myjoyy.composetutorial2.speechrecognition.SpeechRecognition
 import com.myjoyy.composetutorial2.viewModels.UserViewModel
-
 import java.io.File
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -113,8 +112,10 @@ fun SettingsProject(
     notificationHelper: NotificationHelper
 ){
     val context = LocalContext.current
-
     //var user = userDao.getUser()
+
+    val activity = context as? Activity
+    val speechRecognition = remember { SpeechRecognition(context) }
 
 
     val pickMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -145,6 +146,7 @@ fun SettingsProject(
         }
     }
 
+    val tts by speechRecognition.text.collectAsState()
     var username by remember { mutableStateOf(user?.username ?: "") }
 
     val changeUsername = { newUsername: String ->
@@ -155,9 +157,17 @@ fun SettingsProject(
         //user by userViewModel.user.observeAsState()
     }
 
+    LaunchedEffect(tts) {
+        if (tts.isNotEmpty()){
+            username = tts
+            changeUsername(username)
+        }
+    }
+
     Column(
         modifier = modifier
-            .fillMaxSize().padding(all = 8.dp)
+            .fillMaxSize()
+            .padding(all = 8.dp)
     ) {
         Text(text = "User:")
         Spacer(modifier = Modifier.height(8.dp))
@@ -194,7 +204,32 @@ fun SettingsProject(
             ),
             modifier = Modifier.width(200.dp)
         )
-
+        Spacer(modifier = Modifier.height(25.dp))
+//TEST
+        ExtendedFloatingActionButton(
+            onClick =  {
+                if (speechRecognition.hasPermission(context)){
+                    speechRecognition.start()
+                }else{
+                    if (activity != null) {
+                        speechRecognition.requestPermission(activity)
+                    }
+                }
+            },
+            modifier = Modifier
+                .width(200.dp)
+                .height(60.dp)
+        ){
+            Row(verticalAlignment = Alignment.CenterVertically){
+                Icon(
+                    painter = painterResource(R.drawable.speech_to_text_24px),
+                    contentDescription = "Use Speech To Text"
+                )
+                Spacer(modifier = modifier.width(10.dp))
+                Text(text = "SpeechToText")
+            }
+        }
+//TEST ENDS}
         Spacer(modifier = Modifier.height(25.dp))
 
         val launcher = rememberLauncherForActivityResult(

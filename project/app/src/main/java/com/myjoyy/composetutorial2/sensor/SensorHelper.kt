@@ -18,7 +18,6 @@ import androidx.core.app.NotificationCompat
 import com.myjoyy.composetutorial2.MainActivity
 import kotlin.math.abs
 
-
 //https://developer.android.com/develop/sensors-and-location/sensors/sensors_overview#sensor-availability
 //https://developer.android.com/develop/background-work/services/fgs/launch
 class SensorHelper : Service(), SensorEventListener {
@@ -47,7 +46,6 @@ class SensorHelper : Service(), SensorEventListener {
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
-
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
         // Do something here if sensor accuracy changes.
@@ -84,8 +82,6 @@ class SensorHelper : Service(), SensorEventListener {
         manager.createNotificationChannel(channel)
     }
 
-
-
     private fun sensorNotification(title: String, content: String){
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -105,5 +101,4 @@ class SensorHelper : Service(), SensorEventListener {
             .build()
         notificationManager.notify(1, notification)
     }
-
 }
