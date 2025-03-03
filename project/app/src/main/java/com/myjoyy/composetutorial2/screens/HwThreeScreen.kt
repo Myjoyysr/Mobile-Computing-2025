@@ -51,7 +51,6 @@ import coil3.compose.rememberAsyncImagePainter
 
 import com.myjoyy.composetutorial2.viewModels.UserViewModel
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HwThreeScreen(
@@ -66,11 +65,9 @@ fun HwThreeScreen(
     //https://developer.android.com/develop/ui/compose/components/app-bars
     //https://developer.android.com/develop/ui/compose/libraries
 
-
     //val userDetails = userDao.getUser()
     //val userViewModel: UserViewModel = viewModel(factory = UserFactory(userDao))
     val userDetails by userViewModel.user.observeAsState()
-
 
     Scaffold(
 
@@ -116,8 +113,6 @@ fun HwThreeScreen(
     }
 }
 
-
-
 @Composable
 fun MessageCard3(msg: Message, userDetails: User?) {
     Row(modifier = Modifier.padding(all = 8.dp)) {
@@ -128,8 +123,6 @@ fun MessageCard3(msg: Message, userDetails: User?) {
         }else{
             painterResource(R.drawable.profile_picture)
         }
-
-
 
         Image(
             painter = profilePainter,

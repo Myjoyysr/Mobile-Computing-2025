@@ -1,6 +1,5 @@
 package com.myjoyy.composetutorial2.db
 
-
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

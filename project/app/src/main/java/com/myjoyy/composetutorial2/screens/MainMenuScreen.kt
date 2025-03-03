@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,9 +55,7 @@ fun MainMenu(
 {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     //https://developer.android.com/develop/ui/compose/components/app-bars
-
     Scaffold(
-
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -119,7 +116,6 @@ fun MainMenu(
                     Spacer(modifier = modifier.width(10.dp))
                     Text(text = "Homework 1")
                 }
-
             }
 
             Spacer(modifier = Modifier.height(25.dp))
@@ -138,7 +134,6 @@ fun MainMenu(
                     Spacer(modifier = modifier.width(10.dp))
                     Text(text = "Homework 2")
                 }
-
             }
 
             Spacer(modifier = Modifier.height(25.dp))
@@ -157,7 +152,6 @@ fun MainMenu(
                     Spacer(modifier = modifier.width(10.dp))
                     Text(text = "Homework 3")
                 }
-
             }
 
             Spacer(modifier = Modifier.height(25.dp))
@@ -176,7 +170,6 @@ fun MainMenu(
                     Spacer(modifier = modifier.width(10.dp))
                     Text(text = "Homework 4")
                 }
-
             }
 
             Spacer(modifier = Modifier.height(25.dp))
@@ -195,7 +188,6 @@ fun MainMenu(
                     Spacer(modifier = modifier.width(10.dp))
                     Text(text = "Project")
                 }
-
             }
         }
     }

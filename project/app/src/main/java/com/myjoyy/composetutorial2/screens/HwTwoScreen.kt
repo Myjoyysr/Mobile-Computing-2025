@@ -58,7 +58,6 @@ fun HwTwoScreen(
 
     //back button handling since fast clicking pops too many items from stack
 
-
     Scaffold(
 
         topBar = {
@@ -101,8 +100,6 @@ fun HwTwoScreen(
         )
     }
 }
-
-
 
 @Composable
 fun MessageCard2(msg: Message) {

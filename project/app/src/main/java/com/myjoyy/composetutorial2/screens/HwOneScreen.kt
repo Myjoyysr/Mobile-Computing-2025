@@ -36,7 +36,6 @@ import com.myjoyy.composetutorial2.R
 
 data class Message(val author: String, val body: String)
 
-
 @Composable
 fun HwOneScreen(
     modifier: Modifier = Modifier

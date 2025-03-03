@@ -113,10 +113,8 @@ fun SettingsProject(
 ){
     val context = LocalContext.current
     //var user = userDao.getUser()
-
     val activity = context as? Activity
     val speechRecognition = remember { SpeechRecognition(context) }
-
 
     val pickMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         // Callback is invoked after the user selects a media item or closes the

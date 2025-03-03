@@ -1,10 +1,12 @@
 package com.myjoyy.composetutorial2
 
+import SampleData
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
@@ -18,15 +20,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Observer
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.myjoyy.composetutorial2.db.MessageDao
 import com.myjoyy.composetutorial2.db.User
 import com.myjoyy.composetutorial2.db.UserDao
 import com.myjoyy.composetutorial2.db.UserDatabase
+import com.myjoyy.composetutorial2.db.dbMessage
 import com.myjoyy.composetutorial2.notifications.NotificationHelper
 import com.myjoyy.composetutorial2.ui.theme.ComposeTutorial2Theme
 import kotlinx.serialization.Serializable
@@ -138,7 +143,6 @@ class MainActivity : ComponentActivity() {
         ).allowMainThreadQueries().build()
 
         val userDao = db.userDao()
-
         val userCheck = userDao.getUserOne()
 
         if (userCheck == null){
@@ -146,6 +150,17 @@ class MainActivity : ComponentActivity() {
             userDao.insertUser(newUser)
 
         }
+
+        val messageDao = db.messageDao()
+        val messagesCheck = messageDao.getMessages()
+
+        messagesCheck.observe(this, Observer { messages ->
+            if (messages.isEmpty()) {
+                SampleData.conversationSample.forEach( { sampleMessage ->
+                    messageDao.insertMessage(dbMessage(userId = 1, message = sampleMessage.body))
+                })
+            }
+        })
 
         val notificationHelper = NotificationHelper(this)
         notificationHelper.notificationChannel()
@@ -159,7 +174,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeTutorial2Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    TutorialNavigation(modifier = Modifier.padding(innerPadding), userDao = userDao, notificationHelper = notificationHelper)
+                    TutorialNavigation(modifier = Modifier.padding(innerPadding), userDao = userDao,
+                        messageDao = messageDao, notificationHelper = notificationHelper)
 
                 }
             }
@@ -172,9 +188,10 @@ fun TutorialNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     userDao: UserDao,
+    messageDao: MessageDao,
     notificationHelper: NotificationHelper
 ){
-    val userViewModel: UserViewModel = viewModel(factory = UserFactory(userDao))
+    val userViewModel: UserViewModel = viewModel(factory = UserFactory(userDao, messageDao))
 
     NavHost(
         modifier = modifier,
@@ -234,7 +251,6 @@ fun TutorialNavigation(
                 userViewModel = userViewModel
             )
         }
-
 
         composable<Settings> {
             SettingsScreen(

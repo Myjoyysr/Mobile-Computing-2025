@@ -19,5 +19,4 @@ interface UserDao{
 
     @Insert
     fun insertUser(user: User)
-
 }

@@ -41,16 +41,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.style.TextOverflow
-
 import com.myjoyy.composetutorial2.R
 import com.myjoyy.composetutorial2.db.User
-
-
 import coil3.compose.rememberAsyncImagePainter
-
-
 import com.myjoyy.composetutorial2.viewModels.UserViewModel
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,14 +60,11 @@ fun HwFourScreen(
     //https://developer.android.com/develop/ui/compose/components/app-bars
     //https://developer.android.com/develop/ui/compose/libraries
 
-
     //val userDetails = userDao.getUser()
     //val userViewModel: UserViewModel = viewModel(factory = UserFactory(userDao))
     val userDetails by userViewModel.user.observeAsState()
 
-
     Scaffold(
-
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -116,8 +107,6 @@ fun HwFourScreen(
     }
 }
 
-
-
 @Composable
 fun MessageCard4(msg: Message, userDetails: User?) {
     Row(modifier = Modifier.padding(all = 8.dp)) {
@@ -128,8 +117,6 @@ fun MessageCard4(msg: Message, userDetails: User?) {
         }else{
             painterResource(R.drawable.profile_picture)
         }
-
-
 
         Image(
             painter = profilePainter,
